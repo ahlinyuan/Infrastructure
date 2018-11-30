@@ -3,7 +3,8 @@ package com.ahlinyuan.infrastructure;
 import android.app.Application;
 import android.content.Context;
 
-import com.ahlinyuan.infrastructure.M.http.HttpAPI;
+import com.ahlinyuan.infrastructure.M.http.Network;
+import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
 public class IApplication extends Application {
 
@@ -20,7 +21,11 @@ public class IApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //缓存全局上下文对象
         AppCtx = getApplicationContext();
-        HttpAPI.init();
+        //初始化屏幕适配
+        ScreenAdapterTools.init(this);
+        //初始化网络请求
+        Network.init(null);
     }
 }

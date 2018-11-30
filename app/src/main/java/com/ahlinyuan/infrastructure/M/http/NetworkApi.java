@@ -1,6 +1,6 @@
 package com.ahlinyuan.infrastructure.M.http;
 
-public interface API {
+public interface NetworkApi {
 
     /**
      * 参数名

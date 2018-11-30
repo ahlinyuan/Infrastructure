@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Infrastructure</string>
-    <string name="loading">请稍后···</string>
+    <string name="loading">Loading…</string>
 
 </resources>
