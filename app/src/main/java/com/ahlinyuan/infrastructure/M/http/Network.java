@@ -1,5 +1,6 @@
 package com.ahlinyuan.infrastructure.M.http;
 
+import com.ahlinyuan.infrastructure.M.models.BaseModel;
 import com.ahlinyuan.infrastructure.utils.LogUtils;
 
 import io.reactivex.Observable;
@@ -89,4 +90,11 @@ public class Network implements INetwork {
     //网络请求==================
 
 
+    @Override
+    public Observable<BaseModel> checkUpdate(int versions) {
+        RequestParam rp = new RequestParam();
+        rp.put("versions", versions);
+        LogUtils.e("ahlinyuan RequestParam:" + rp.toString());
+        return thread(NetworkApi.checkUpdate(rp.toString()));
+    }
 }

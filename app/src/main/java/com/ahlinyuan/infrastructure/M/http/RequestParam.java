@@ -1,5 +1,7 @@
 package com.ahlinyuan.infrastructure.M.http;
 
+import com.google.gson.Gson;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,5 +16,10 @@ public class RequestParam {
     public Map<String, Object> put(String key, Object value) {
         map.put(key, value);
         return map;
+    }
+
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
     }
 }
