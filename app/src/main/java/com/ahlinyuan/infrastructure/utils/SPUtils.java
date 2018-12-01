@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 import static com.ahlinyuan.infrastructure.IApplication.AppCtx;
 
-public class SPUtil {
+public class SPUtils {
 
     private static SharedPreferences SP;
 

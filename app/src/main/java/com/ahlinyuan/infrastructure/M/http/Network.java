@@ -1,6 +1,6 @@
 package com.ahlinyuan.infrastructure.M.http;
 
-import com.ahlinyuan.infrastructure.utils.LogUtil;
+import com.ahlinyuan.infrastructure.utils.LogUtils;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -74,7 +74,7 @@ public class Network implements INetwork {
         rBuilder.client(oBuilder.build());
 
         NetworkApi = rBuilder.build().create(NetworkApi.class);
-        LogUtil.e("网络API初始化完成");
+        LogUtils.e("网络API初始化完成");
     }
 
     //线程切换部分=============
@@ -87,4 +87,6 @@ public class Network implements INetwork {
     }
 
     //网络请求==================
+
+
 }

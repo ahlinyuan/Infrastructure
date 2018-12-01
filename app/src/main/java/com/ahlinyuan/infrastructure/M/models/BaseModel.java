@@ -1,6 +1,6 @@
 package com.ahlinyuan.infrastructure.M.models;
 
-import com.ahlinyuan.infrastructure.M.util.Enums;
+import com.ahlinyuan.infrastructure.M.utils.Enums;
 
 /**
  * 基础的请求模型

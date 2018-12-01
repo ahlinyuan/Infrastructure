@@ -1,6 +1,7 @@
 package com.ahlinyuan.infrastructure.P;
 
 import com.ahlinyuan.infrastructure.V.IBaseView;
+import com.ahlinyuan.infrastructure.V.uicallback.IBaseHttpRequestCallBack;
 
 /**
  * 基础控制器

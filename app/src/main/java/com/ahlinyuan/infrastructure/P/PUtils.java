@@ -1,4 +1,4 @@
 package com.ahlinyuan.infrastructure.P;
 
-public class PUtil {
+public class PUtils {
 }

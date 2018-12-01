@@ -1,9 +1,10 @@
 package com.ahlinyuan.infrastructure.V.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 
+import com.ahlinyuan.infrastructure.P.P;
 import com.ahlinyuan.infrastructure.R;
+import com.ahlinyuan.infrastructure.V.uicallback.IMainView;
 
 public class MainActivity extends BaseActivity {
 
@@ -15,7 +16,25 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void init(Bundle savedInstanceState) {
         findViewById(R.id.tv).setOnClickListener(v -> {
-            showProgress();
+//            showProgress();
+//            toast("ahlinyuan");
+
+            P.createMainPresenter(new MainView(true)).requestStr();
         });
+    }
+
+    public class MainView extends BaseHttpRequestCallBack implements IMainView {
+
+        MainView() {
+        }
+
+        MainView(boolean isShowProgress) {
+            super(isShowProgress);
+        }
+
+        @Override
+        public void onHttpRequestSuccess(String str) {
+            runOnUiThread(() -> toast(str));
+        }
     }
 }

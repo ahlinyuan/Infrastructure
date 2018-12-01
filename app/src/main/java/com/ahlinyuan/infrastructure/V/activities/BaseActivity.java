@@ -1,14 +1,15 @@
 package com.ahlinyuan.infrastructure.V.activities;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.ahlinyuan.infrastructure.R;
 import com.ahlinyuan.infrastructure.V.IBaseView;
-import com.ahlinyuan.infrastructure.V.util.Toast;
+import com.ahlinyuan.infrastructure.V.uicallback.IBaseHttpRequestCallBack;
+import com.ahlinyuan.infrastructure.V.utils.Toast;
+import com.ahlinyuan.infrastructure.utils.LogUtils;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
+
+import static com.ahlinyuan.infrastructure.IApplication.AppCtx;
 
 /**
  * 基础页面
@@ -109,6 +112,37 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         }
     }
 
+    public class BaseHttpRequestCallBack extends BasePresenterView implements IBaseHttpRequestCallBack {
+
+        private boolean isShowProgress;
+
+        BaseHttpRequestCallBack() {
+        }
+
+        BaseHttpRequestCallBack(boolean isShowProgress) {
+            this.isShowProgress = isShowProgress;
+        }
+
+        @Override
+        public void onHttpRequestStart() {
+            if (isShowProgress)
+                showProgress();
+        }
+
+        @Override
+        public void onHttpRequestError(int code, String error) {
+            LogUtils.e("ahlinyuan code:" + code + ",error:" + error);
+            toast(error);
+        }
+
+        @Override
+        public void onHttpRequestComplete() {
+            if (isShowProgress)
+                dismissProgress();
+        }
+    }
+
+
     //Toast====================================
 
     /**
@@ -117,7 +151,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
      * @param res 资源
      */
     public void toast(int res) {
-        Toast.show(this, res);
+        Toast.show(AppCtx, res);
     }
 
     /**
@@ -126,7 +160,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
      * @param text 文本
      */
     public void toast(CharSequence text) {
-        Toast.show(this, text);
+        Toast.show(AppCtx, text);
     }
 
     //进度框===========================

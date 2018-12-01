@@ -11,7 +11,7 @@ import static com.ahlinyuan.infrastructure.IApplication.ISLINE;
  * Log封装类
  * Created by Ahlin on 2018/11/21.
  */
-public class LogUtil {
+public class LogUtils {
     private static final String TAG = "infrastructure";
 
     public static void i(String msg) {

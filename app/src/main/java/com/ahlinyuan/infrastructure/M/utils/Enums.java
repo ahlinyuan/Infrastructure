@@ -1,4 +1,4 @@
-package com.ahlinyuan.infrastructure.M.util;
+package com.ahlinyuan.infrastructure.M.utils;
 
 /**
  * 枚举类
