@@ -32,14 +32,14 @@ public class BaseProxy<V extends IBaseView, P extends BasePresenter<V>> implemen
     }
 
     /**
-     * 设置Presenter的工厂类,这个方法只能在创建Presenter之前调用,也就是调用getMvpPresenter()之前，如果Presenter已经创建则不能再修改
+     * 设置Presenter的工厂类,这个方法只能在创建Presenter之前调用,也就是调用getPresenter()之前，如果Presenter已经创建则不能再修改
      *
      * @param presenterFactory PresenterFactory类型
      */
     @Override
     public void setPresenterFactory(PresenterFactory<V, P> presenterFactory) {
         if (mPresenter != null) {
-            throw new IllegalArgumentException("这个方法只能在getMvpPresenter()之前调用，如果Presenter已经创建则不能再修改");
+            throw new IllegalArgumentException("这个方法只能在getPresenter()之前调用，如果Presenter已经创建则不能再修改");
         }
         this.mFactory = presenterFactory;
     }
@@ -47,7 +47,7 @@ public class BaseProxy<V extends IBaseView, P extends BasePresenter<V>> implemen
     /**
      * 获取Presenter的工厂类
      *
-     * @return PresenterMvpFactory类型
+     * @return PresenterFactory类型
      */
     @Override
     public PresenterFactory<V, P> getPresenterFactory() {
@@ -90,8 +90,8 @@ public class BaseProxy<V extends IBaseView, P extends BasePresenter<V>> implemen
     /**
      * 销毁Presenter持有的View
      */
-    private void onDetachMvpView() {
-        LogUtils.e("Proxy onDetachMvpView = ");
+    private void onDetachView() {
+        LogUtils.e("Proxy onDetachView = ");
         if (mPresenter != null && mIsAttchView) {
             mPresenter.onDetachView();
             mIsAttchView = false;
@@ -104,7 +104,7 @@ public class BaseProxy<V extends IBaseView, P extends BasePresenter<V>> implemen
     public void onDestroy() {
         LogUtils.e("Proxy onDestroy = ");
         if (mPresenter != null) {
-            onDetachMvpView();
+            onDetachView();
             mPresenter.onDestroyPersenter();
             mPresenter = null;
         }

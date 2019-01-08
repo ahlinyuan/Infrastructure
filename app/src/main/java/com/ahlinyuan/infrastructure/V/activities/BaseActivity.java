@@ -100,7 +100,7 @@ public abstract class BaseActivity<V extends IBaseView, P extends BasePresenter<
 
     @Override
     public P getPresenter() {
-        LogUtils.e("V getMvpPresenter");
+        LogUtils.e("V getPresenter");
         return mProxy.getPresenter();
     }
 

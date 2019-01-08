@@ -19,7 +19,7 @@ public interface IPresenterProxy<V extends IBaseView, P extends BasePresenter<V>
 
     /**
      * 获取Presenter的工厂类
-     * @return 返回PresenterMvpFactory类型
+     * @return 返回PresenterFactory类型
      */
     PresenterFactory<V,P> getPresenterFactory();
 

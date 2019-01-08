@@ -47,7 +47,7 @@ public class BasePresenter<V extends IBaseView> {
      */
     public void onDetachView() {
         mView = null;
-        LogUtils.e("P onDetachMvpView = ");
+        LogUtils.e("P onDetachView = ");
     }
 
     /**
@@ -70,7 +70,7 @@ public class BasePresenter<V extends IBaseView> {
     /**
      * 获取V层接口View
      *
-     * @return 返回当前MvpView
+     * @return 返回当前View
      */
     public V getView() {
         return mView;
