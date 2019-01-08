@@ -3,7 +3,9 @@ package com.ahlinyuan.infrastructure.V;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 
 /**
- * 基础UI层接口
+ * @author ahlinyuan
+ * @date 2019/1/7
+ * @description 基础UI层接口
  */
 public interface IBaseView {
 

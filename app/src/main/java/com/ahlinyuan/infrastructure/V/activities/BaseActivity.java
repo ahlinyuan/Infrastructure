@@ -5,9 +5,13 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.ahlinyuan.infrastructure.P.BasePresenter;
+import com.ahlinyuan.infrastructure.P.factory.PresenterFactory;
+import com.ahlinyuan.infrastructure.P.factory.PresenterFactoryImpl;
+import com.ahlinyuan.infrastructure.P.proxy.BaseProxy;
+import com.ahlinyuan.infrastructure.P.proxy.IPresenterProxy;
 import com.ahlinyuan.infrastructure.R;
 import com.ahlinyuan.infrastructure.V.IBaseView;
-import com.ahlinyuan.infrastructure.V.uicallback.IBaseHttpRequestCallBack;
 import com.ahlinyuan.infrastructure.V.utils.Toast;
 import com.ahlinyuan.infrastructure.utils.LogUtils;
 import com.trello.rxlifecycle2.LifecycleTransformer;
@@ -23,10 +27,17 @@ import butterknife.ButterKnife;
 import static com.ahlinyuan.infrastructure.IApplication.AppCtx;
 
 /**
- * 基础页面
- * Created by Administrator on 2018/6/25.
+ * @author ahlinyuan
+ * @date 2018/6/25
+ * @description 基础页面，父Activity
  */
-public abstract class BaseActivity extends RxAppCompatActivity {
+public abstract class BaseActivity<V extends IBaseView, P extends BasePresenter<V>> extends RxAppCompatActivity implements IPresenterProxy<V, P> {
+
+    private static final String PRESENTER_SAVE_KEY = "presenter_save_key";
+    /**
+     * 创建被代理对象,传入默认Presenter的工厂
+     */
+    private BaseProxy<V, P> mProxy = new BaseProxy<>(PresenterFactoryImpl.createFactory(getClass()));
 
     //页面列表缓存
     private static final List<Activity> ACTIVITIES = new ArrayList<>();
@@ -34,6 +45,12 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LogUtils.e("V onCreate");
+        LogUtils.e("V onCreate mProxy = " + mProxy);
+        LogUtils.e("V onCreate this = " + this.hashCode());
+        if (savedInstanceState != null) {
+            mProxy.onRestoreInstanceState(savedInstanceState.getBundle(PRESENTER_SAVE_KEY));
+        }
         ACTIVITIES.add(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(getLayoutID());
@@ -48,9 +65,43 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        LogUtils.e("V onResume");
+        mProxy.onResume((V) this);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+        LogUtils.e("V onDestroy = " + isChangingConfigurations());
+        mProxy.onDestroy();
         ACTIVITIES.remove(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        LogUtils.e("V onSaveInstanceState");
+        outState.putBundle(PRESENTER_SAVE_KEY, mProxy.onSaveInstanceState());
+    }
+
+    @Override
+    public void setPresenterFactory(PresenterFactory<V, P> presenterFactory) {
+        LogUtils.e("V setPresenterFactory");
+        mProxy.setPresenterFactory(presenterFactory);
+    }
+
+    @Override
+    public PresenterFactory<V, P> getPresenterFactory() {
+        LogUtils.e("V getPresenterFactory");
+        return mProxy.getPresenterFactory();
+    }
+
+    @Override
+    public P getPresenter() {
+        LogUtils.e("V getMvpPresenter");
+        return mProxy.getPresenter();
     }
 
     /**
@@ -104,44 +155,6 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     public <T> LifecycleTransformer<T> bindUntilDestroyEvent() {
         return bindUntilEvent(ActivityEvent.DESTROY);
     }
-
-    protected class BasePresenterView implements IBaseView {
-        @Override
-        public <T> LifecycleTransformer<T> bindUntilDestroyEvent() {
-            return bindUntilEvent(ActivityEvent.DESTROY);
-        }
-    }
-
-    public class BaseHttpRequestCallBack extends BasePresenterView implements IBaseHttpRequestCallBack {
-
-        private boolean isShowProgress;
-
-        BaseHttpRequestCallBack() {
-        }
-
-        BaseHttpRequestCallBack(boolean isShowProgress) {
-            this.isShowProgress = isShowProgress;
-        }
-
-        @Override
-        public void onHttpRequestStart() {
-            if (isShowProgress)
-                showProgress();
-        }
-
-        @Override
-        public void onHttpRequestError(int code, String error) {
-            LogUtils.e("ahlinyuan code:" + code + ",error:" + error);
-            toast(error);
-        }
-
-        @Override
-        public void onHttpRequestComplete() {
-            if (isShowProgress)
-                dismissProgress();
-        }
-    }
-
 
     //Toast====================================
 

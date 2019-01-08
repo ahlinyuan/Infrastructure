@@ -2,39 +2,44 @@ package com.ahlinyuan.infrastructure.V.activities;
 
 import android.os.Bundle;
 
-import com.ahlinyuan.infrastructure.P.P;
+import com.ahlinyuan.infrastructure.P.factory.CreatePresenter;
+import com.ahlinyuan.infrastructure.P.presenter.MainPresenter;
 import com.ahlinyuan.infrastructure.R;
-import com.ahlinyuan.infrastructure.V.uicallback.IMainView;
 
-public class MainActivity extends BaseActivity {
+@CreatePresenter(MainPresenter.class)
+public class MainActivity extends BaseActivity<IMainView, MainPresenter> implements IMainView {
 
     @Override
     protected int getLayoutID() {
         return R.layout.activity_main;
     }
 
+
     @Override
     protected void init(Bundle savedInstanceState) {
         findViewById(R.id.tv).setOnClickListener(v -> {
-//            showProgress();
-//            toast("ahlinyuan");
-
-            P.createMainPresenter(new MainView(true)).requestStr();
+            getPresenter().requestStr();
         });
     }
 
-    public class MainView extends BaseHttpRequestCallBack implements IMainView {
 
-        MainView() {
-        }
+    @Override
+    public void onHttpRequestStart() {
 
-        MainView(boolean isShowProgress) {
-            super(isShowProgress);
-        }
+    }
 
-        @Override
-        public void onHttpRequestSuccess(String str) {
-            runOnUiThread(() -> toast(str));
-        }
+    @Override
+    public void onHttpRequestSuccess(String msg) {
+
+    }
+
+    @Override
+    public void onHttpRequestError(int code, String mag) {
+
+    }
+
+    @Override
+    public void onHttpRequestComplete() {
+
     }
 }

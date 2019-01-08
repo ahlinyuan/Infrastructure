@@ -4,28 +4,22 @@ import android.annotation.SuppressLint;
 
 import com.ahlinyuan.infrastructure.M.M;
 import com.ahlinyuan.infrastructure.P.BasePresenter;
-import com.ahlinyuan.infrastructure.V.uicallback.IMainView;
+import com.ahlinyuan.infrastructure.V.activities.IMainView;
 
-public class MainPresenter extends BasePresenter<IMainView> implements IMainPresenter {
-
-
-    public MainPresenter(IMainView view) {
-        super(view);
-    }
+public class MainPresenter extends BasePresenter<IMainView> {
 
     @SuppressLint("CheckResult")
-    @Override
     public void requestStr() {
-        view.onHttpRequestStart();
-        M.getNetwork().checkUpdate(1).compose(view.bindUntilDestroyEvent()).subscribe(baseModel -> {
+        getView().onHttpRequestStart();
+        M.getNetwork().checkUpdate(1).compose(getView().bindUntilDestroyEvent()).subscribe(baseModel -> {
             if (baseModel.isResponseSuccess()) {
-                view.onHttpRequestSuccess(baseModel.getMsg());
+                getView().onHttpRequestSuccess(baseModel.getMsg());
             } else {
-                view.onHttpRequestError(baseModel.getCode(), baseModel.getMsg());
+                getView().onHttpRequestError(baseModel.getCode(), baseModel.getMsg());
             }
         }, e -> {
-            view.onHttpRequestError(CODE_NET_ERROR, e.getMessage());
-            view.onHttpRequestComplete();
+            getView().onHttpRequestError(CODE_NET_ERROR, e.getMessage());
+            getView().onHttpRequestComplete();
         });
     }
 }
