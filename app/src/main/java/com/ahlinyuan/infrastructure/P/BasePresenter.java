@@ -37,8 +37,8 @@ public class BasePresenter<V extends IBaseView> {
     /**
      * 绑定View
      */
-    public void onAttachView(V mvpView) {
-        mView = mvpView;
+    public void onAttachView(V view) {
+        mView = view;
         LogUtils.e("P onResume");
     }
 
@@ -61,7 +61,7 @@ public class BasePresenter<V extends IBaseView> {
      * 在Presenter意外销毁的时候被调用，它的调用时机和Activity、Fragment、View中的onSaveInstanceState
      * 时机相同
      *
-     * @param outState
+     * @param outState 意外销毁的Bundle
      */
     public void onSaveInstanceState(Bundle outState) {
         LogUtils.e("P onSaveInstanceState = ");

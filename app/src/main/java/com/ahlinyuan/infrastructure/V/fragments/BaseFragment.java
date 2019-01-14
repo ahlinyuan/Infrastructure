@@ -6,14 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ahlinyuan.infrastructure.P.BasePresenter;
+import com.ahlinyuan.infrastructure.P.factory.IPresenterFactory;
 import com.ahlinyuan.infrastructure.P.factory.PresenterFactory;
-import com.ahlinyuan.infrastructure.P.factory.PresenterFactoryImpl;
-import com.ahlinyuan.infrastructure.P.proxy.BaseProxy;
+import com.ahlinyuan.infrastructure.P.proxy.PresenterProxy;
 import com.ahlinyuan.infrastructure.P.proxy.IPresenterProxy;
 import com.ahlinyuan.infrastructure.V.activities.BaseActivity;
 import com.ahlinyuan.infrastructure.V.IBaseView;
-import com.trello.rxlifecycle2.LifecycleTransformer;
-import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 import com.yatoooon.screenadaptation.ScreenAdapterTools;
 
@@ -33,7 +31,7 @@ public abstract class BaseFragment<V extends IBaseView, P extends BasePresenter<
     /**
      * 创建被代理对象,传入默认Presenter的工厂
      */
-    private BaseProxy<V, P> mProxy = new BaseProxy<>(PresenterFactoryImpl.createFactory(getClass()));
+    private PresenterProxy<V, P> mProxy = new PresenterProxy<>(PresenterFactory.createFactory(getClass()));
 
 
     @Override
@@ -80,7 +78,7 @@ public abstract class BaseFragment<V extends IBaseView, P extends BasePresenter<
      * @param presenterFactory PresenterFactory类型
      */
     @Override
-    public void setPresenterFactory(PresenterFactory<V, P> presenterFactory) {
+    public void setPresenterFactory(IPresenterFactory<V, P> presenterFactory) {
         mProxy.setPresenterFactory(presenterFactory);
     }
 
@@ -90,7 +88,7 @@ public abstract class BaseFragment<V extends IBaseView, P extends BasePresenter<
      * @return PresenterMvpFactory类型
      */
     @Override
-    public PresenterFactory<V, P> getPresenterFactory() {
+    public IPresenterFactory<V, P> getPresenterFactory() {
         return mProxy.getPresenterFactory();
     }
 

@@ -7,8 +7,9 @@ import io.reactivex.Observable;
 public interface INetwork {
 
     /**
-     * 检查更新（示例）
-     * @return
+     * 更新检查（示例）
+     * @param versions 当前版本
+     * @return 接口返回数据
      */
     Observable<BaseModel> checkUpdate(int versions);
 }

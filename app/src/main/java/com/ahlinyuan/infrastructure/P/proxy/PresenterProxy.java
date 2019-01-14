@@ -3,7 +3,7 @@ package com.ahlinyuan.infrastructure.P.proxy;
 import android.os.Bundle;
 
 import com.ahlinyuan.infrastructure.P.BasePresenter;
-import com.ahlinyuan.infrastructure.P.factory.PresenterFactory;
+import com.ahlinyuan.infrastructure.P.factory.IPresenterFactory;
 import com.ahlinyuan.infrastructure.V.IBaseView;
 import com.ahlinyuan.infrastructure.utils.LogUtils;
 
@@ -12,7 +12,7 @@ import com.ahlinyuan.infrastructure.utils.LogUtils;
  * @date 2019/1/7
  * @description 代理实现类，用来管理Presenter的生命周期，还有和view之间的关联
  */
-public class BaseProxy<V extends IBaseView, P extends BasePresenter<V>> implements IPresenterProxy<V, P> {
+public class PresenterProxy<V extends IBaseView, P extends BasePresenter<V>> implements IPresenterProxy<V, P> {
 
     /**
      * 获取onSaveInstanceState中bundle的key
@@ -22,12 +22,12 @@ public class BaseProxy<V extends IBaseView, P extends BasePresenter<V>> implemen
     /**
      * Presenter工厂类
      */
-    private PresenterFactory<V, P> mFactory;
+    private IPresenterFactory<V, P> mFactory;
     private P mPresenter;
     private Bundle mBundle;
     private boolean mIsAttchView;
 
-    public BaseProxy(PresenterFactory<V, P> presenterFactory) {
+    public PresenterProxy(IPresenterFactory<V, P> presenterFactory) {
         this.mFactory = presenterFactory;
     }
 
@@ -37,7 +37,7 @@ public class BaseProxy<V extends IBaseView, P extends BasePresenter<V>> implemen
      * @param presenterFactory PresenterFactory类型
      */
     @Override
-    public void setPresenterFactory(PresenterFactory<V, P> presenterFactory) {
+    public void setPresenterFactory(IPresenterFactory<V, P> presenterFactory) {
         if (mPresenter != null) {
             throw new IllegalArgumentException("这个方法只能在getPresenter()之前调用，如果Presenter已经创建则不能再修改");
         }
@@ -50,7 +50,7 @@ public class BaseProxy<V extends IBaseView, P extends BasePresenter<V>> implemen
      * @return PresenterFactory类型
      */
     @Override
-    public PresenterFactory<V, P> getPresenterFactory() {
+    public IPresenterFactory<V, P> getPresenterFactory() {
         return mFactory;
     }
 
@@ -69,20 +69,20 @@ public class BaseProxy<V extends IBaseView, P extends BasePresenter<V>> implemen
                 mPresenter.onCreatePersenter(mBundle == null ? null : mBundle.getBundle(PRESENTER_KEY));
             }
         }
-        LogUtils.e("Proxy getMvpPresenter = " + mPresenter);
+        LogUtils.e("Proxy getPresenter = " + mPresenter);
         return mPresenter;
     }
 
     /**
      * 绑定Presenter和view
      *
-     * @param mvpView view
+     * @param view view
      */
-    public void onResume(V mvpView) {
+    public void onResume(V view) {
         getPresenter();
         LogUtils.e("Proxy onResume");
         if (mPresenter != null && !mIsAttchView) {
-            mPresenter.onAttachView(mvpView);
+            mPresenter.onAttachView(view);
             mIsAttchView = true;
         }
     }

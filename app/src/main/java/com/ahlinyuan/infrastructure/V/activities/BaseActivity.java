@@ -6,9 +6,9 @@ import android.os.Bundle;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.ahlinyuan.infrastructure.P.BasePresenter;
+import com.ahlinyuan.infrastructure.P.factory.IPresenterFactory;
 import com.ahlinyuan.infrastructure.P.factory.PresenterFactory;
-import com.ahlinyuan.infrastructure.P.factory.PresenterFactoryImpl;
-import com.ahlinyuan.infrastructure.P.proxy.BaseProxy;
+import com.ahlinyuan.infrastructure.P.proxy.PresenterProxy;
 import com.ahlinyuan.infrastructure.P.proxy.IPresenterProxy;
 import com.ahlinyuan.infrastructure.R;
 import com.ahlinyuan.infrastructure.V.IBaseView;
@@ -37,7 +37,7 @@ public abstract class BaseActivity<V extends IBaseView, P extends BasePresenter<
     /**
      * 创建被代理对象,传入默认Presenter的工厂
      */
-    private BaseProxy<V, P> mProxy = new BaseProxy<>(PresenterFactoryImpl.createFactory(getClass()));
+    private PresenterProxy<V, P> mProxy = new PresenterProxy<>(PresenterFactory.createFactory(getClass()));
 
     //页面列表缓存
     private static final List<Activity> ACTIVITIES = new ArrayList<>();
@@ -87,13 +87,13 @@ public abstract class BaseActivity<V extends IBaseView, P extends BasePresenter<
     }
 
     @Override
-    public void setPresenterFactory(PresenterFactory<V, P> presenterFactory) {
+    public void setPresenterFactory(IPresenterFactory<V, P> presenterFactory) {
         LogUtils.e("V setPresenterFactory");
         mProxy.setPresenterFactory(presenterFactory);
     }
 
     @Override
-    public PresenterFactory<V, P> getPresenterFactory() {
+    public IPresenterFactory<V, P> getPresenterFactory() {
         LogUtils.e("V getPresenterFactory");
         return mProxy.getPresenterFactory();
     }
